@@ -94,7 +94,7 @@ class EditScreen extends StatelessWidget {
                                 color: Colors.blue,
                               ),
                               child: Text(
-                                'Zapisz',
+                                'Save',
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 20.0,
@@ -123,7 +123,7 @@ class EditScreen extends StatelessWidget {
                                 color: const Color(0xFFF32121),
                               ),
                               child: Text(
-                                'Anuluj',
+                                'Cancel',
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 20.0,

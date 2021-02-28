@@ -181,7 +181,7 @@ class _PrintScreenState extends State<PrintScreen> {
                               Align(
                                 alignment: Alignment(-0.09, 0.0),
                                 child: Text(
-                                  'Głowica',
+                                  'Head',
                                   style: TextStyle(
                                     fontFamily: 'HK Grotesk',
                                     fontSize: 30.0,
@@ -236,7 +236,7 @@ class _PrintScreenState extends State<PrintScreen> {
                                     Align(
                                       alignment: Alignment(-0.11, 0.0),
                                       child: Text(
-                                        'Łóżko',
+                                        'Bed',
                                         style: TextStyle(
                                           fontFamily: 'HK Grotesk',
                                           fontSize: 30.0,
@@ -293,7 +293,7 @@ class _PrintScreenState extends State<PrintScreen> {
                           children: <Widget>[
                             Spacer(flex: 25),
                             Text(
-                              'Postęp wydruku',
+                              'Print progress',
                               style: TextStyle(
                                 fontFamily: 'HK Grotesk',
                                 fontSize: 40.0,
@@ -306,7 +306,7 @@ class _PrintScreenState extends State<PrintScreen> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Drukuje 1h 25min',
+                                '',
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 30.0,
@@ -365,7 +365,7 @@ class _PrintScreenState extends State<PrintScreen> {
                       color: Colors.blue,
                     ),
                     child: Text(
-                      'Ustawienia',
+                      'Settings',
                       style: TextStyle(
                         fontFamily: 'HK Grotesk',
                         fontSize: 35.0,
@@ -471,7 +471,7 @@ class _PrintScreenState extends State<PrintScreen> {
                           color: const Color(0xFFF39A21),
                         ),
                         child: Text(
-                          'Pauza',
+                          'Pause',
                           style: TextStyle(
                             fontFamily: 'HK Grotesk',
                             fontSize: 35.0,
@@ -498,7 +498,7 @@ class _PrintScreenState extends State<PrintScreen> {
                           color: const Color(0xFFF32121),
                         ),
                         child: Text(
-                          'Anuluj',
+                          'Cancel',
                           style: TextStyle(
                             fontFamily: 'HK Grotesk',
                             fontSize: 35.0,

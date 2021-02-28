@@ -157,7 +157,7 @@ class _RCScreenState extends State<RCScreen> {
                     color: const Color(0xFF1E1E1E),
                   ),
                   child: Text(
-                    'Ustaw temperaturę',
+                    'Set the temperature',
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -396,7 +396,7 @@ class _RCScreenState extends State<RCScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Wypluwanie filamentu',
+                        'Extrude',
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -425,7 +425,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        'Wciągnij',
+                        'Pull in',
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -451,7 +451,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        'Wypluj',
+                        'Pull out',
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -487,7 +487,7 @@ class _RCScreenState extends State<RCScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Wentylator',
+                        'Fan',
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -516,7 +516,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        'Wyłącz',
+                        'Turn off',
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -542,7 +542,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        'Włącz',
+                        'Turn on',
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -571,7 +571,7 @@ class _RCScreenState extends State<RCScreen> {
                     color: const Color(0xFF1E1E1E),
                   ),
                   child: Text(
-                    'Wyłącz silniki',
+                    'Disable motors',
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -598,7 +598,7 @@ class _RCScreenState extends State<RCScreen> {
                     color: Colors.blue,
                   ),
                   child: Text(
-                    'Zamknij',
+                    'Close',
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,

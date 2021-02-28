@@ -68,7 +68,7 @@ class FileScreen extends StatelessWidget {
               ),
               Spacer(flex: 50),
               Text(
-                'Witamy w MyOcto',
+                'Welcome to MyOcto',
                 style: TextStyle(
                   fontFamily: 'HK Grotesk',
                   fontSize: 56.0,
@@ -82,7 +82,7 @@ class FileScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.02, 0.0),
                 child: Text(
-                  'Wybrano plik',
+                  'File selected',
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 40.0,
@@ -190,7 +190,7 @@ class FileScreen extends StatelessWidget {
                     color: Colors.blue,
                   ),
                   child: Text(
-                    'Drukuj',
+                    'Print',
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -209,12 +209,12 @@ class FileScreen extends StatelessWidget {
                       context,
                       new MaterialPageRoute(
                           builder: (context) => new SettingsBox()));
-                  print('onTap Ustawienia drukarki');
+                  print('onTap Settings');
                 },
                 child: Padding(
                   padding: EdgeInsets.all(30.0),
                   child: Text(
-                    'Ustawienia drukarki',
+                    'Settings',
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 30.0,

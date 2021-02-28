@@ -81,7 +81,7 @@ class _SDListScreenState extends State<SDListScreen> {
               color: Colors.white,
             ),
             Text(
-              " Usuń",
+              " Delete",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -113,7 +113,7 @@ class _SDListScreenState extends State<SDListScreen> {
               color: Colors.white,
             ),
             Text(
-              " Wybierz",
+              " Select",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -141,7 +141,7 @@ class _SDListScreenState extends State<SDListScreen> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: Text("Czy na pewno usunąć $item?"),
+                  content: Text("Are you sure to delete $item?"),
                   actions: <Widget>[
                     FlatButton(
                       child: Text(
@@ -287,7 +287,7 @@ class _SDListScreenState extends State<SDListScreen> {
                       color: const Color(0xFFF32121),
                     ),
                     child: Text(
-                      'Anuluj',
+                      'Close',
                       style: TextStyle(
                         fontFamily: 'HK Grotesk',
                         fontSize: 20.0,

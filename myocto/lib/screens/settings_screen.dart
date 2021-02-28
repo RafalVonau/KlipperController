@@ -70,7 +70,7 @@ class SettingScreen extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text(
-                            'Zamknij',
+                            'Close',
                             style: TextStyle(
                               fontFamily: 'HK Grotesk',
                               fontSize: 30.0,
@@ -83,7 +83,7 @@ class SettingScreen extends StatelessWidget {
                       ),
                       Spacer(flex: 190),
                       Text(
-                        'Ustawienia',
+                        'Settings',
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 45.0,
@@ -103,7 +103,7 @@ class SettingScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.89, 0.0),
                 child: Text(
-                  'IP drukarki',
+                  'IP',
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 30.0,
@@ -144,7 +144,7 @@ class SettingScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.83, 0.0),
                 child: Text(
-                  'Temperatura głowicy',
+                  'Head temperature',
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 30.0,
@@ -186,7 +186,7 @@ class SettingScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.85, 0.0),
                 child: Text(
-                  'Temperatura łóżka',
+                  'Bed temperature',
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 30.0,
@@ -259,7 +259,7 @@ class SettingScreen extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    'Konfiguracja Klippera',
+                                    'Klipper config',
                                     style: TextStyle(
                                       fontFamily: 'HK Grotesk',
                                       fontSize: 30.0,
@@ -273,7 +273,7 @@ class SettingScreen extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.bottomLeft,
                                   child: Text(
-                                    'Edytuj plik cfg',
+                                    'Edit cfg file',
                                     style: TextStyle(
                                       fontFamily: 'HK Grotesk',
                                       fontSize: 30.0,
@@ -507,7 +507,7 @@ class SettingScreen extends StatelessWidget {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Zdalne sterowanie',
+                                  'Remote control',
                                   style: TextStyle(
                                     fontFamily: 'HK Grotesk',
                                     fontSize: 35.0,
@@ -518,7 +518,7 @@ class SettingScreen extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'Steruj osiami drukarki',
+                                'Control the printer axes',
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 30.0,

@@ -32,6 +32,7 @@ KLIPPER_LOG= - type path to klipper log file
   sudo systemctl start print-server
 
 # Building application for Android/iOS
+<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 * install flutter - follow instrictions from https://flutter.dev/docs/get-started/install
 * git clone https://github.com/BubuHub/KlipperController.git
 * cd myocto
