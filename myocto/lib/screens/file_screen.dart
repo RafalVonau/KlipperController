@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'settings_screen.dart';
 import 'print_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../globals.dart' as globals;
 
 class FileBox extends StatelessWidget {
@@ -11,8 +12,6 @@ class FileBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double logicWidth = WidgetsBinding.instance.window.physicalSize.width;
-    double logicHeight = WidgetsBinding.instance.window.physicalSize.height;
     return SizedBox.expand(
         child: Container(
             color: Colors.blueGrey,
@@ -20,8 +19,8 @@ class FileBox extends StatelessWidget {
                 fit: BoxFit.contain,
                 alignment: Alignment.center,
                 child: SizedBox(
-                  width: logicWidth,
-                  height: logicHeight,
+                  width: globals.logicWidth,
+                  height: globals.logicHeight,
                   child: FileScreen(_fileName),
                 ))));
   }
@@ -45,7 +44,7 @@ class FileScreen extends StatelessWidget {
       body: Align(
         alignment: Alignment(0.0, 0.34),
         child: SizedBox(
-          width: 520.0,
+          width: 600.0,
           height: 1280.0,
           child: Column(
             children: <Widget>[
@@ -68,7 +67,7 @@ class FileScreen extends StatelessWidget {
               ),
               Spacer(flex: 50),
               Text(
-                'Welcome to MyOcto',
+                AppLocalizations.of(context).welcome,
                 style: TextStyle(
                   fontFamily: 'HK Grotesk',
                   fontSize: 56.0,
@@ -82,7 +81,7 @@ class FileScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.02, 0.0),
                 child: Text(
-                  'File selected',
+                  AppLocalizations.of(context).selectedfile,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 40.0,
@@ -190,7 +189,7 @@ class FileScreen extends StatelessWidget {
                     color: Colors.blue,
                   ),
                   child: Text(
-                    'Print',
+                    AppLocalizations.of(context).print,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -209,12 +208,12 @@ class FileScreen extends StatelessWidget {
                       context,
                       new MaterialPageRoute(
                           builder: (context) => new SettingsBox()));
-                  print('onTap Settings');
+                  print('onTap Ustawienia drukarki');
                 },
                 child: Padding(
                   padding: EdgeInsets.all(30.0),
                   child: Text(
-                    'Settings',
+                    AppLocalizations.of(context).printersettings,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 30.0,

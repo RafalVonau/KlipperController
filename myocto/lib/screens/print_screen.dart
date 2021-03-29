@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../statefulwrapper.dart';
 import 'settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../globals.dart' as globals;
 
 class PrintBox extends StatelessWidget {
@@ -11,8 +12,6 @@ class PrintBox extends StatelessWidget {
   PrintBox(this._fileName) : super();
   @override
   Widget build(BuildContext context) {
-    double logicWidth = WidgetsBinding.instance.window.physicalSize.width;
-    double logicHeight = WidgetsBinding.instance.window.physicalSize.height;
     return SizedBox.expand(
         child: Container(
             color: Colors.blueGrey,
@@ -20,8 +19,8 @@ class PrintBox extends StatelessWidget {
                 fit: BoxFit.contain,
                 alignment: Alignment.center,
                 child: SizedBox(
-                  width: logicWidth,
-                  height: logicHeight,
+                  width: globals.logicWidth,
+                  height: globals.logicHeight,
                   child: PrintScreen(_fileName),
                 ))));
   }
@@ -181,7 +180,7 @@ class _PrintScreenState extends State<PrintScreen> {
                               Align(
                                 alignment: Alignment(-0.09, 0.0),
                                 child: Text(
-                                  'Head',
+                                  AppLocalizations.of(context).head,
                                   style: TextStyle(
                                     fontFamily: 'HK Grotesk',
                                     fontSize: 30.0,
@@ -236,7 +235,7 @@ class _PrintScreenState extends State<PrintScreen> {
                                     Align(
                                       alignment: Alignment(-0.11, 0.0),
                                       child: Text(
-                                        'Bed',
+                                        AppLocalizations.of(context).bed,
                                         style: TextStyle(
                                           fontFamily: 'HK Grotesk',
                                           fontSize: 30.0,
@@ -293,7 +292,7 @@ class _PrintScreenState extends State<PrintScreen> {
                           children: <Widget>[
                             Spacer(flex: 25),
                             Text(
-                              'Print progress',
+                              AppLocalizations.of(context).printprogress,
                               style: TextStyle(
                                 fontFamily: 'HK Grotesk',
                                 fontSize: 40.0,
@@ -365,7 +364,7 @@ class _PrintScreenState extends State<PrintScreen> {
                       color: Colors.blue,
                     ),
                     child: Text(
-                      'Settings',
+                      AppLocalizations.of(context).settings,
                       style: TextStyle(
                         fontFamily: 'HK Grotesk',
                         fontSize: 35.0,
@@ -471,7 +470,7 @@ class _PrintScreenState extends State<PrintScreen> {
                           color: const Color(0xFFF39A21),
                         ),
                         child: Text(
-                          'Pause',
+                          AppLocalizations.of(context).pause,
                           style: TextStyle(
                             fontFamily: 'HK Grotesk',
                             fontSize: 35.0,
@@ -498,7 +497,7 @@ class _PrintScreenState extends State<PrintScreen> {
                           color: const Color(0xFFF32121),
                         ),
                         child: Text(
-                          'Cancel',
+                          AppLocalizations.of(context).cancel,
                           style: TextStyle(
                             fontFamily: 'HK Grotesk',
                             fontSize: 35.0,

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../globals.dart' as globals;
 
 class EditScreen extends StatelessWidget {
@@ -94,7 +95,7 @@ class EditScreen extends StatelessWidget {
                                 color: Colors.blue,
                               ),
                               child: Text(
-                                'Save',
+                                AppLocalizations.of(context).save,
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 20.0,
@@ -123,7 +124,7 @@ class EditScreen extends StatelessWidget {
                                 color: const Color(0xFFF32121),
                               ),
                               child: Text(
-                                'Cancel',
+                                AppLocalizations.of(context).cancel,
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 20.0,

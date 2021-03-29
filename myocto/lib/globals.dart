@@ -5,3 +5,5 @@ SharedPreferences prefs;
 String api_url;
 int head_temp;
 int bed_temp;
+double logicWidth = 720;
+double logicHeight = 1280;

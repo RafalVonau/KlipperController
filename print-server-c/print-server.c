@@ -2,10 +2,7 @@
  * Server to controll 3D printer.
  *
  * Author: Rafal Vonau <rafal.vonau@gmail.com>
- #
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as
- * published by the Free Software Foundation.
+ *
  */
 #include "sys_net.h"
 #include <dlfcn.h>
@@ -221,7 +218,7 @@ void execute_printer_commands(String *s, const char *cmd, const char *arg, const
 
 	cstring_add(s, "{");
 	if (__printer_fd < 0) {
-		__printer_fd = open("/tmp/printer",O_RDWR | O_NOCTTY );
+		__printer_fd = open("/tmp/printer",O_RDWR | O_NOCTTY | O_NONBLOCK );
 		if (__printer_fd < 0) goto cn_error;
 		configureRS1(__printer_fd);
 	}
@@ -237,7 +234,7 @@ void execute_printer_commands(String *s, const char *cmd, const char *arg, const
 	if (count != len) {
 		/* Ponowne połączenie */
 		close(__printer_fd);
-		__printer_fd = open("/tmp/printer",O_RDWR | O_NOCTTY );
+		__printer_fd = open("/tmp/printer",O_RDWR | O_NOCTTY | O_NONBLOCK );
 		if (__printer_fd < 0) goto cn_error;
 		configureRS1(__printer_fd);
 		tcflush (__printer_fd, TCIFLUSH);

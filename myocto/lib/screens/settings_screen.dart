@@ -4,12 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'rc_screen.dart';
 import 'edit_screen.dart';
 import '../globals.dart' as globals;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double logicWidth = WidgetsBinding.instance.window.physicalSize.width;
-    double logicHeight = WidgetsBinding.instance.window.physicalSize.height;
     return SizedBox.expand(
         child: Container(
             color: Colors.blueGrey,
@@ -17,8 +16,8 @@ class SettingsBox extends StatelessWidget {
                 fit: BoxFit.contain,
                 alignment: Alignment.center,
                 child: SizedBox(
-                  width: logicWidth,
-                  height: logicHeight,
+                  width: globals.logicWidth,
+                  height: globals.logicHeight,
                   child: SettingScreen(),
                 ))));
   }
@@ -70,7 +69,7 @@ class SettingScreen extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text(
-                            'Close',
+                            AppLocalizations.of(context).close,
                             style: TextStyle(
                               fontFamily: 'HK Grotesk',
                               fontSize: 30.0,
@@ -83,7 +82,7 @@ class SettingScreen extends StatelessWidget {
                       ),
                       Spacer(flex: 190),
                       Text(
-                        'Settings',
+                        AppLocalizations.of(context).settings,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 45.0,
@@ -103,7 +102,7 @@ class SettingScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.89, 0.0),
                 child: Text(
-                  'IP',
+                  AppLocalizations.of(context).printer_ip,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 30.0,
@@ -144,7 +143,7 @@ class SettingScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.83, 0.0),
                 child: Text(
-                  'Head temperature',
+                  AppLocalizations.of(context).temp_head,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 30.0,
@@ -186,7 +185,7 @@ class SettingScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.85, 0.0),
                 child: Text(
-                  'Bed temperature',
+                  AppLocalizations.of(context).temp_bed,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 30.0,
@@ -223,6 +222,7 @@ class SettingScreen extends StatelessWidget {
                   keyboardType: TextInputType.number,
                 ),
               ),
+              // Config
               SizedBox(width: 600, height: 60),
               InkWell(
                 onTap: () {
@@ -259,10 +259,10 @@ class SettingScreen extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    'Klipper config',
+                                    AppLocalizations.of(context).cfg_klipper,
                                     style: TextStyle(
                                       fontFamily: 'HK Grotesk',
-                                      fontSize: 30.0,
+                                      fontSize: 28.0,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
                                       height: 0.97,
@@ -273,10 +273,10 @@ class SettingScreen extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.bottomLeft,
                                   child: Text(
-                                    'Edit cfg file',
+                                    AppLocalizations.of(context).cfg_edit,
                                     style: TextStyle(
                                       fontFamily: 'HK Grotesk',
-                                      fontSize: 30.0,
+                                      fontSize: 28.0,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w500,
                                       height: 1.13,
@@ -294,7 +294,8 @@ class SettingScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Spacer(flex: 20),
+              SizedBox(width: 600, height: 60),
+              //Remote
               InkWell(
                 onTap: () {
                   Navigator.push(context,
@@ -507,24 +508,27 @@ class SettingScreen extends StatelessWidget {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Remote control',
+                                  AppLocalizations.of(context).remote_control,
                                   style: TextStyle(
                                     fontFamily: 'HK Grotesk',
-                                    fontSize: 35.0,
+                                    fontSize: 28.0,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
                                     height: 0.97,
                                   ),
                                 ),
                               ),
-                              Text(
-                                'Control the printer axes',
-                                style: TextStyle(
-                                  fontFamily: 'HK Grotesk',
-                                  fontSize: 30.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.13,
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  AppLocalizations.of(context).remote_desc,
+                                  style: TextStyle(
+                                    fontFamily: 'HK Grotesk',
+                                    fontSize: 28.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.13,
+                                  ),
                                 ),
                               ),
                               Spacer(flex: 10),
@@ -537,7 +541,7 @@ class SettingScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Spacer(flex: 10),
+              Spacer(flex: 100),
             ],
           ),
         ),

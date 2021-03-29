@@ -8,6 +8,8 @@ EnvironmentFile=/etc/default/print-server
 ExecStart=/usr/bin/print-server -u $UPLOAD_DIR -c $KLIPPER_CFG -l $KLIPPER_LOG
 StandardOutput=syslog
 StandardError=syslog
+User=pi
+Group=pi
 
 [Install]
 WantedBy=multi-user.target

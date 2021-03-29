@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../globals.dart' as globals;
 
 class RCBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double logicWidth = WidgetsBinding.instance.window.physicalSize.width;
-    double logicHeight = WidgetsBinding.instance.window.physicalSize.height;
     return SizedBox.expand(
         child: Container(
             color: Colors.blueGrey,
@@ -15,8 +14,8 @@ class RCBox extends StatelessWidget {
                 fit: BoxFit.contain,
                 alignment: Alignment.center,
                 child: SizedBox(
-                  width: logicWidth,
-                  height: logicHeight,
+                  width: globals.logicWidth,
+                  height: globals.logicHeight,
                   child: RCScreen(),
                 ))));
   }
@@ -157,7 +156,7 @@ class _RCScreenState extends State<RCScreen> {
                     color: const Color(0xFF1E1E1E),
                   ),
                   child: Text(
-                    'Set the temperature',
+                    AppLocalizations.of(context).settemp,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -396,7 +395,7 @@ class _RCScreenState extends State<RCScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Extrude',
+                        AppLocalizations.of(context).extrude,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -425,7 +424,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        'Pull in',
+                        AppLocalizations.of(context).pullup,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -451,7 +450,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        'Pull out',
+                        AppLocalizations.of(context).spitout,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -487,7 +486,7 @@ class _RCScreenState extends State<RCScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Fan',
+                        AppLocalizations.of(context).fan,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -516,7 +515,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        'Turn off',
+                        AppLocalizations.of(context).turnoff,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -542,7 +541,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        'Turn on',
+                        AppLocalizations.of(context).turnon,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -571,7 +570,7 @@ class _RCScreenState extends State<RCScreen> {
                     color: const Color(0xFF1E1E1E),
                   ),
                   child: Text(
-                    'Disable motors',
+                    AppLocalizations.of(context).turnoffmotors,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -598,7 +597,7 @@ class _RCScreenState extends State<RCScreen> {
                     color: Colors.blue,
                   ),
                   child: Text(
-                    'Close',
+                    AppLocalizations.of(context).close,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,

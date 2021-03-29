@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import "package:collection/collection.dart";
 import 'file_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../globals.dart' as globals;
 
 extension StringExtensions on String {
@@ -81,7 +82,7 @@ class _SDListScreenState extends State<SDListScreen> {
               color: Colors.white,
             ),
             Text(
-              " Delete",
+              AppLocalizations.of(context).delete,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -113,7 +114,7 @@ class _SDListScreenState extends State<SDListScreen> {
               color: Colors.white,
             ),
             Text(
-              " Select",
+              AppLocalizations.of(context).select,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -141,11 +142,12 @@ class _SDListScreenState extends State<SDListScreen> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: Text("Are you sure to delete $item?"),
+                  content: Text(
+                      AppLocalizations.of(context).confirmdelete + " $item?"),
                   actions: <Widget>[
                     FlatButton(
                       child: Text(
-                        "Anuluj",
+                        AppLocalizations.of(context).cancel,
                         style: TextStyle(color: Colors.black),
                       ),
                       onPressed: () {
@@ -154,7 +156,7 @@ class _SDListScreenState extends State<SDListScreen> {
                     ),
                     FlatButton(
                       child: Text(
-                        "Usuń",
+                        AppLocalizations.of(context).delete,
                         style: TextStyle(color: Colors.red),
                       ),
                       onPressed: () {
@@ -250,7 +252,7 @@ class _SDListScreenState extends State<SDListScreen> {
                     filterSearchResults(value);
                   },
                   decoration: InputDecoration(
-                    hintText: "Szukaj",
+                    hintText: AppLocalizations.of(context).search,
                     prefixIcon: Icon(Icons.search, color: Colors.white),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.all(10.0),
@@ -287,7 +289,7 @@ class _SDListScreenState extends State<SDListScreen> {
                       color: const Color(0xFFF32121),
                     ),
                     child: Text(
-                      'Close',
+                      AppLocalizations.of(context).close,
                       style: TextStyle(
                         fontFamily: 'HK Grotesk',
                         fontSize: 20.0,

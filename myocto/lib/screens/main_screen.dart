@@ -8,6 +8,7 @@ import 'file_screen.dart';
 import 'sdlist_screen.dart';
 import 'print_screen.dart';
 import '../globals.dart' as globals;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 extension FileExtention on FileSystemEntity {
   String get name {
@@ -41,43 +42,55 @@ class _MainScreenState extends State<MainScreen> {
   // upload file to PI filesystem.
   void uploadFile() async {
     final String api_url = globals.api_url;
-    final FilePickerResult result =
-        await FilePicker.platform.pickFiles(withData: true);
-    if (result != null) {
-      var rfile = result.files.first;
-      String name = rfile.name.split("/")?.last;
-      setState(() => _uploading = true);
-      try {
-        final stopwatch = Stopwatch()..start();
+    String name;
+    bool ok = false;
+
+    setState(() => _uploading = true);
+
+    if (Platform.isAndroid) {
+      final FilePickerResult result =
+          await FilePicker.platform.pickFiles(sendToIP: api_url);
+      if (result != null) {
+        var rfile = result.files.first;
+        name = rfile.name.split("/")?.last;
+        ok = true;
+      }
+    } else {
+      final FilePickerResult result =
+          await FilePicker.platform.pickFiles(withData: true);
+      if (result != null) {
+        var rfile = result.files.first;
+        name = rfile.name.split("/")?.last;
+        try {
+          Socket s = await Socket.connect(api_url, 55555);
+          s.write("download:$name\n");
+          //await s.addStream(file.openRead());
+          s.add(rfile.bytes); // one second faster
+          await s.flush();
+          await s.close();
+          s.destroy();
 /*
-
-        Socket s = await Socket.connect(api_url, 55555);
-        s.write("download:$name\n");
-        //await s.addStream(file.openRead());
-        s.add(rfile.bytes); // one second faster
-        await s.flush();
-        await s.close();
-        s.destroy();
+            const AsciiCodec ascii = AsciiCodec();
+            RawSynchronousSocket s =
+                RawSynchronousSocket.connectSync(api_url, 55555);
+            s.writeFromSync(ascii.encode("download:$name\n"));
+            s.writeFromSync(rfile.bytes);
+            s.closeSync();
 */
-
-        const AsciiCodec ascii = AsciiCodec();
-        RawSynchronousSocket s =
-            RawSynchronousSocket.connectSync(api_url, 55555);
-        s.writeFromSync(ascii.encode("download:$name\n"));
-        s.writeFromSync(rfile.bytes);
-        s.closeSync();
-
-        print('ok: data written in ${stopwatch.elapsed} ');
-        Navigator.push(context,
-            new MaterialPageRoute(builder: (context) => new FileBox(name)));
-      } catch (e) {
-        print(e.toString());
-        _showAlert(context, e.toString());
-      } finally {
-        setState(() => _uploading = false);
+          ok = true;
+        } catch (e) {
+          print(e.toString());
+          _showAlert(context, e.toString());
+        }
       }
     }
+    setState(() => _uploading = false);
     await FilePicker.platform.clearTemporaryFiles();
+    if (ok) {
+      print('ok: data written');
+      Navigator.push(context,
+          new MaterialPageRoute(builder: (context) => new FileBox(name)));
+    }
   }
 
   @override
@@ -92,26 +105,18 @@ class _MainScreenState extends State<MainScreen> {
         body: Align(
           alignment: Alignment(0.0, 0.34),
           child: SizedBox(
-            width: 520.0,
+            width: 600.0,
             height: 1280.0,
             child: Column(
               children: <Widget>[
                 Spacer(flex: 201),
 // Group: octopus
                 InkWell(
-                  onLongPress: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new PrintBox('')));
-                    print('onLongPress Octopus');
-                  },
                   onTap: () {
                     Navigator.push(
                         context,
                         new MaterialPageRoute(
-                            builder: (context) => new SDListScreen()));
-                    print('onTap Octopus');
+                            builder: (context) => new PrintBox('')));
                   },
                   child: SizedBox(
                     width: 292.63,
@@ -126,7 +131,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 Spacer(flex: 57),
                 Text(
-                  'Witamy w MyOcto',
+                  AppLocalizations.of(context).welcome,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 56.0,
@@ -140,7 +145,7 @@ class _MainScreenState extends State<MainScreen> {
                 Align(
                   alignment: Alignment(-0.04, 0.0),
                   child: Text(
-                    'Dodaj pliki do kolejki',
+                    AppLocalizations.of(context).addfilestoqueue,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 40.0,
@@ -153,6 +158,12 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 Spacer(flex: 198),
                 InkWell(
+                  onLongPress: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new SDListScreen()));
+                  },
                   onTap: uploadFile,
                   child:
 // Group: Group 9
@@ -181,7 +192,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           Spacer(flex: 40),
                           SizedBox(
-                            width: 170.0,
+                            width: 180.0,
                             height: 75.0,
                             child: Column(
                               children: <Widget>[
@@ -189,30 +200,33 @@ class _MainScreenState extends State<MainScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Add files',
+                                    AppLocalizations.of(context).addfiles,
                                     style: TextStyle(
                                       fontFamily: 'HK Grotesk',
-                                      fontSize: 35.0,
+                                      fontSize: 34.0,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
                                       height: 0.97,
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  'Pick the file',
-                                  style: TextStyle(
-                                    fontFamily: 'HK Grotesk',
-                                    fontSize: 29.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.13,
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    AppLocalizations.of(context).choicefile,
+                                    style: TextStyle(
+                                      fontFamily: 'HK Grotesk',
+                                      fontSize: 28.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                      height: 1.13,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Spacer(flex: 170),
+                          Spacer(flex: 150),
                         ],
                       ),
                     ),
@@ -225,12 +239,11 @@ class _MainScreenState extends State<MainScreen> {
                         context,
                         new MaterialPageRoute(
                             builder: (context) => new SettingsBox()));
-                    print('onTap Ustawienia drukarki');
                   },
                   child: Padding(
                     padding: EdgeInsets.all(30.0),
                     child: Text(
-                      'Settings',
+                      AppLocalizations.of(context).printersettings,
                       style: TextStyle(
                         fontFamily: 'HK Grotesk',
                         fontSize: 30.0,
