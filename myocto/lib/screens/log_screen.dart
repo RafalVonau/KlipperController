@@ -31,7 +31,7 @@ class LogScreen extends StatelessWidget {
               body: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(width: 600, height: 30),
+                    SizedBox(width: 320, height: 30),
                     Container(
                       width: 320.0,
                       //height: 250.0,
@@ -40,6 +40,7 @@ class LogScreen extends StatelessWidget {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: SingleChildScrollView(
+                        
                         child: TextField(
                           keyboardType: TextInputType.multiline,
                           autofocus: false,
