@@ -12,6 +12,7 @@ I decided to write my own software to control the printer. This software is divi
 
 NOTE: The project is not yet finished. Still working on it.
 
+![alt tag](https://github.com/BubuHub/KlipperController/blob/main/blob/assets/main_screen.jpg)
 
 # Building server on PI
 * install git and gcc compiler on pi (sudo apt install git gcc)

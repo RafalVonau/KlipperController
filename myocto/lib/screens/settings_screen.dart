@@ -71,7 +71,7 @@ class SettingScreen extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text(
-                            AppLocalizations.of(context).close,
+                            AppLocalizations.of(context).save,
                             style: TextStyle(
                               fontFamily: 'HK Grotesk',
                               fontSize: 30.0,
