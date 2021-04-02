@@ -35,6 +35,11 @@
   "search": "Search",
   "delete":"Delete",
   "confirmdelete":"Are you sure to remove",
-  "select":"Select"
+  "select":"Select",
+  "fromphone": "From a phone",
+  "fileapp": "Through the Files application",
+  "frompi": "From RaspberryPI",
+  "frompitext": "Previously submitted",
+  "printerlog": "Klipper log"
 
 }

@@ -69,11 +69,11 @@ class _RCScreenState extends State<RCScreen> {
     await send("G1 E${dir * 1}.0 F50");
     if (_selectedexmm == 3) {
       for (i = 1; i <= 5; ++i) {
-        await send("G1 E${i * dir * 10}.0 F50");
+        await send("G1 E${i * dir * 10}.0 F100");
       }
     } else {
       for (i = 1; i <= _selectedexmm; ++i) {
-        await send("G1 E${i * dir * 5}.0 F50");
+        await send("G1 E${i * dir * 5}.0 F100");
       }
     }
   }
@@ -137,7 +137,7 @@ class _RCScreenState extends State<RCScreen> {
       body: Center(
         child: SizedBox(
           width: 600.0,
-          height: 1280.0,
+          //height: 1280.0,
           child: Column(
             children: <Widget>[
               SizedBox(width: 20.0, height: 80.0),
@@ -175,7 +175,7 @@ class _RCScreenState extends State<RCScreen> {
                   SizedBox(width: boxW + boxP, height: boxH),
                   InkWell(
                     onTap: () {
-                      move(1, 1);
+                      move(1, -1);
                     },
                     child: SizedBox(
                       width: boxW,
@@ -323,7 +323,7 @@ class _RCScreenState extends State<RCScreen> {
                   SizedBox(width: boxW + boxP, height: boxH),
                   InkWell(
                     onTap: () {
-                      move(1, -1);
+                      move(1, 1);
                     },
                     child: SizedBox(
                       width: boxW,

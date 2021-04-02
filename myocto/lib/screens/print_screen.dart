@@ -151,7 +151,7 @@ class _PrintScreenState extends State<PrintScreen> {
       body: Center(
         child: SizedBox(
           width: 600.0,
-          height: 1280.0,
+          //height: 1280.0,
           child: Column(
             children: <Widget>[
               Spacer(flex: 60),

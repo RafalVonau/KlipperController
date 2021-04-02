@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:file_picker/file_picker.dart';
@@ -7,6 +6,7 @@ import 'settings_screen.dart';
 import 'file_screen.dart';
 import 'sdlist_screen.dart';
 import 'print_screen.dart';
+import 'pick_screen.dart';
 import '../globals.dart' as globals;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -69,14 +69,6 @@ class _MainScreenState extends State<MainScreen> {
           await s.flush();
           await s.close();
           s.destroy();
-/*
-            const AsciiCodec ascii = AsciiCodec();
-            RawSynchronousSocket s =
-                RawSynchronousSocket.connectSync(api_url, 55555);
-            s.writeFromSync(ascii.encode("download:$name\n"));
-            s.writeFromSync(rfile.bytes);
-            s.closeSync();
-*/
           ok = true;
         } catch (e) {
           print(e.toString());
@@ -112,7 +104,15 @@ class _MainScreenState extends State<MainScreen> {
                 Spacer(flex: 201),
 // Group: octopus
                 InkWell(
+                  onLongPress: () {
+                    /* Print from SD (local files on PI) */
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new SDListScreen()));
+                  },
                   onTap: () {
+                    /* Go to print page  */
                     Navigator.push(
                         context,
                         new MaterialPageRoute(
@@ -159,12 +159,15 @@ class _MainScreenState extends State<MainScreen> {
                 Spacer(flex: 198),
                 InkWell(
                   onLongPress: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new SDListScreen()));
+                    /* ShortCut for uload file to SD card. */
+                    uploadFile();
                   },
-                  onTap: uploadFile,
+                  onTap: () {
+                    /* Go to select file source page */
+                     Navigator.push(
+                        context,
+                        new MaterialPageRoute(builder: (context) => new PickBox()));                    
+                  },
                   child:
 // Group: Group 9
                       Container(

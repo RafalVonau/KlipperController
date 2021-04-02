@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'rc_screen.dart';
 import 'edit_screen.dart';
+import 'log_screen.dart';
 import '../globals.dart' as globals;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -39,7 +40,7 @@ class SettingScreen extends StatelessWidget {
       body: Center(
         child: SizedBox(
           width: 520.0,
-          height: 1280.0,
+          //height: 1280.0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -265,7 +266,6 @@ class SettingScreen extends StatelessWidget {
                                       fontSize: 28.0,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
-                                      height: 0.97,
                                     ),
                                   ),
                                 ),
@@ -279,7 +279,6 @@ class SettingScreen extends StatelessWidget {
                                       fontSize: 28.0,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w500,
-                                      height: 1.13,
                                     ),
                                   ),
                                 ),
@@ -514,7 +513,6 @@ class SettingScreen extends StatelessWidget {
                                     fontSize: 28.0,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
-                                    height: 0.97,
                                   ),
                                 ),
                               ),
@@ -527,7 +525,6 @@ class SettingScreen extends StatelessWidget {
                                     fontSize: 28.0,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
-                                    height: 1.13,
                                   ),
                                 ),
                               ),
@@ -541,6 +538,30 @@ class SettingScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              Spacer(flex: 10),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new LogScreen()));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(30.0),
+                    child: Text(
+                      AppLocalizations.of(context).printerlog,
+                      style: TextStyle(
+                        fontFamily: 'HK Grotesk',
+                        fontSize: 30.0,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500,
+                        height: 1.13,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+
               Spacer(flex: 100),
             ],
           ),

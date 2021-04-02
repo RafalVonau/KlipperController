@@ -32,8 +32,11 @@
   "search": "Szukaj",
   "delete":"Usuń",
   "confirmdelete":"Czy na pewno usunąć",
-  "select":"Wybierz"
-
-
+  "select":"Wybierz",
+  "fromphone": "Z telefonu",
+  "fileapp": "Przez aplikację Pliki",
+  "frompi": "Z RaspberryPI",
+  "frompitext": "Wcześniej przesłane",
+  "printerlog": "Log Klippera"
 
 }
