@@ -27,16 +27,16 @@ NOTE: The project is not yet finished. Still working on it.
 * cd KlipperController/print-server-c
 * make
 * sudo make install
-* edit configuration file in /etc/default/print-server
-type:
-  sudo systemctl stop print-server
-  sudo mcedit /etc/default/print-server
-change paths:
-UPLOAD_DIR= - type path tu virtual SD card (as configured in klipper.cfg)
-KLIPPER_CFG= - type path to klipper config file
-KLIPPER_LOG= - type path to klipper log file
-  save (F2) and exit (F10)
-  sudo systemctl start print-server
+* edit configuration file in /etc/default/print-server  
+type:  
+  sudo systemctl stop print-server  
+  sudo mcedit /etc/default/print-server  
+change paths:  
+UPLOAD_DIR= - type path to virtual SD card (as configured in klipper.cfg)  
+KLIPPER_CFG= - type path to klipper config file  
+KLIPPER_LOG= - type path to klipper log file  
+  save (F2) and exit (F10)  
+  sudo systemctl start print-server  
 
 NOTE: I assume that Klipper is run by a user named "pi". If not, modify the user/group name in systemd service file /etc/systemd/system/print-server.service
 
