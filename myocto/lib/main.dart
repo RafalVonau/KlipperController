@@ -60,7 +60,7 @@ class App extends StatelessWidget {
         ],
         supportedLocales: [
           const Locale('en', ''), // English, no country code
-          //const Locale('pl', ''), // Polish, no country code
+          const Locale('pl', ''), // Polish, no country code
         ],
       ),
     );

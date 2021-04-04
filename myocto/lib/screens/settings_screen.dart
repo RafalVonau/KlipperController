@@ -83,28 +83,6 @@ class SettingScreen extends StatelessWidget {
                         ),
                       ),
                       Spacer(flex: 190),
-                      InkWell(
-                        onTap: () async {
-                          Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new CreditsBox()));
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            AppLocalizations.of(context).credits,
-                            style: TextStyle(
-                              fontFamily: 'HK Grotesk',
-                              fontSize: 30.0,
-                              color: Colors.blue,
-                              fontWeight: FontWeight.w500,
-                              height: 1.13,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Spacer(flex: 190),
                       Text(
                         AppLocalizations.of(context).settings,
                         style: TextStyle(
@@ -562,6 +540,7 @@ class SettingScreen extends StatelessWidget {
                 ),
               ),
               Spacer(flex: 10),
+              Row(children: [
                 InkWell(
                   onTap: () {
                     Navigator.push(
@@ -584,7 +563,29 @@ class SettingScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
+                Spacer(flex: 190),
+                InkWell(
+                  onTap: () async {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new CreditsBox()));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      AppLocalizations.of(context).credits,
+                      style: TextStyle(
+                        fontFamily: 'HK Grotesk',
+                        fontSize: 30.0,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500,
+                        height: 1.13,
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
               Spacer(flex: 100),
             ],
           ),

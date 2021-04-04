@@ -20,6 +20,10 @@ class EditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var kbd = MediaQuery.of(context).viewInsets.bottom;
+    var width = screenSize.width;
+    var height = screenSize.height;
     return FutureBuilder(
       future: fetchData(),
       builder: (context, snapshot) {
@@ -35,8 +39,8 @@ class EditScreen extends StatelessWidget {
                     SizedBox(width: 600, height: 30),
                     Container(
                       alignment: Alignment(-0.76, 0.0),
-                      width: 320.0,
-                      height: 250.0,
+                      width: (width - 40.0),
+                      height: (height - kbd - 120.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: const Color(0xFF1E1E1E),

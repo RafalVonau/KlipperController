@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:share/share.dart';
 import '../globals.dart' as globals;
 
 class LogScreen extends StatelessWidget {
@@ -20,6 +21,10 @@ class LogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    //MediaQuery.of(context).viewInsets.bottom
+    var width = screenSize.width;
+    var height = screenSize.height;
     return FutureBuilder(
       future: fetchData(),
       builder: (context, snapshot) {
@@ -31,16 +36,15 @@ class LogScreen extends StatelessWidget {
               body: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(width: 320, height: 30),
+                    SizedBox(width: 320, height: 40),
                     Container(
-                      width: 320.0,
-                      //height: 250.0,
+                      width: width - 40.0,
+                      height: (height - 120.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: SingleChildScrollView(
-                        
                         child: TextField(
                           keyboardType: TextInputType.multiline,
                           autofocus: false,
@@ -67,7 +71,7 @@ class LogScreen extends StatelessWidget {
                       children: <Widget>[
                         InkWell(
                           onTap: () {
-                            // TODO !!
+                            Share.share(_response, subject: 'Klipper log');
                           },
                           child: Padding(
                             padding: EdgeInsets.all(20.0),
@@ -80,7 +84,7 @@ class LogScreen extends StatelessWidget {
                                 color: Colors.blue,
                               ),
                               child: Text(
-                                AppLocalizations.of(context).save,
+                                AppLocalizations.of(context).share,
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 20.0,
