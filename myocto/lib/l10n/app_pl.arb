@@ -40,7 +40,7 @@
   "printerlog": "Log Klippera",
   "credits": "Credits",
   "cflaticon": "Ikony użyte w aplikacji zostały wykonane przez Freepik z www.flaticon.com",
-  "cflutter": "Ta aplikacja została napisana przy pomocy środowiska Flutter napisanego przez Google",
-  "about": "Aplikacja MyOcto służy do sterowania drukarką 3D zbudowaną w oparciu o Raspberry PI oraz sterowaną przez oprogramowanie Klipper ( https://www.klipper3d.org )",
+  "cflutter": "Ta aplikacja została napisana przy pomocy środowiska Flutter napisanego przez Google.",
+  "about": "Aplikacja MyOcto służy do sterowania drukarką 3D zbudowaną w oparciu o Raspberry PI oraz sterowaną przez oprogramowanie Klipper (https://www.klipper3d.org).",
   "share":"Udostępnij"
 }

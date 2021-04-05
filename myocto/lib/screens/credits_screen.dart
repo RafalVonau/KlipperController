@@ -45,7 +45,7 @@ class CreditsScreen extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: Text(
-                          AppLocalizations.of(context).cancel,
+                          AppLocalizations.of(context).close,
                           style: TextStyle(
                             fontFamily: 'HK Grotesk',
                             fontSize: 30.0,

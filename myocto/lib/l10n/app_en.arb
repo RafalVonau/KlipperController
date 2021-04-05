@@ -43,7 +43,7 @@
   "printerlog": "Klipper log",
   "credits": "Credits",
   "cflaticon": "The icons used in the app were made by Freepik from www.flaticon.com",
-  "cflutter": "This application was written using the Flutter environment written by Google",
-  "about": "The MyOcto application is used to control a 3D printer built on Raspberry PI and controlled by Klipper software ( https://www.klipper3d.org )",
+  "cflutter": "This application was written using the Flutter environment written by Google.",
+  "about": "The MyOcto application is used to control a 3D printer built on Raspberry PI and controlled by Klipper software (https://www.klipper3d.org).",
   "share":"Share"
 }
