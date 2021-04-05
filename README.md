@@ -16,8 +16,6 @@ Features:
 - Control temperature and motor movement with a cell phone
 - Monitor print progress and head/bed temperatures
 
-NOTE: The project is not yet finished. Still working on it.
-
 ![](https://github.com/BubuHub/KlipperController/blob/master/blob/assets/main_screen.jpg)
 
 # Building server on PI
