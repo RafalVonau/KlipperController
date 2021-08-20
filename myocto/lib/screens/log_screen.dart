@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:share/share.dart';
 import '../globals.dart' as globals;
 
 class LogScreen extends StatelessWidget {
   final TextEditingController __textEditingCtl = TextEditingController();
-  String _response;
-  Socket _s;
+  String _response = "";
+  Socket? _s;
 
   void _showAlert(BuildContext context, String stext) {
     showDialog(
@@ -20,27 +21,31 @@ class LogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    //MediaQuery.of(context).viewInsets.bottom
+    var width = screenSize.width;
+    var height = screenSize.height;
     return FutureBuilder(
       future: fetchData(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           debugPrint('Step 3, build widget: ${snapshot.data}');
-          __textEditingCtl.text = snapshot.data;
+          final intl = AppLocalizations.of(context)!;
+          __textEditingCtl.text = snapshot.data.toString();
           return Scaffold(
               backgroundColor: Colors.black,
               body: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(width: 320, height: 30),
+                    SizedBox(width: 320, height: 40),
                     Container(
-                      width: 320.0,
-                      //height: 250.0,
+                      width: width - 40.0,
+                      height: (height - 120.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: SingleChildScrollView(
-                        
                         child: TextField(
                           keyboardType: TextInputType.multiline,
                           autofocus: false,
@@ -66,8 +71,9 @@ class LogScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         InkWell(
-                          onTap: () {
-                            // TODO !!
+                          onTap: () async {
+                            await Share.share(_response,
+                                subject: 'Klipper log');
                           },
                           child: Padding(
                             padding: EdgeInsets.all(20.0),
@@ -80,7 +86,7 @@ class LogScreen extends StatelessWidget {
                                 color: Colors.blue,
                               ),
                               child: Text(
-                                AppLocalizations.of(context).save,
+                                intl.share,
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 20.0,
@@ -109,7 +115,7 @@ class LogScreen extends StatelessWidget {
                                 color: const Color(0xFFF32121),
                               ),
                               child: Text(
-                                AppLocalizations.of(context).cancel,
+                                intl.cancel,
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 20.0,
@@ -140,7 +146,7 @@ class LogScreen extends StatelessWidget {
     _response = "";
     try {
       _s = await Socket.connect(globals.api_url, 55555);
-      _s.listen((data) {
+      _s?.listen((data) {
         _response += new String.fromCharCodes(data);
         print('(1)');
       }, onError: ((error, StackTrace trace) {
@@ -150,10 +156,10 @@ class LogScreen extends StatelessWidget {
       }), onDone: (() {
         print("(3):Done");
         _cmp.complete(_response);
-        _s.destroy();
+        _s?.destroy();
       }), cancelOnError: false);
-      _s.write("getlog\n");
-      await _s.flush();
+      _s?.write("getlog\n");
+      await _s?.flush();
     } catch (e) {
       print("(4): Exeption $e");
       _cmp.complete(_response);

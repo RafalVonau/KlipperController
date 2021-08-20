@@ -27,10 +27,10 @@ class RCScreen extends StatefulWidget {
 }
 
 class _RCScreenState extends State<RCScreen> {
-  Socket _s;
-  int _selectedmm;
-  int _selectedexmm;
-  String _secureResponse;
+  Socket? _s;
+  int _selectedmm = 0;
+  int _selectedexmm = 0;
+  String _secureResponse = "";
 
   @override
   void initState() {
@@ -47,8 +47,8 @@ class _RCScreenState extends State<RCScreen> {
   }
 
   Future send(String g) async {
-    _s.write("gcode:$g\n");
-    return _s.flush();
+    _s?.write("gcode:$g\n");
+    return _s?.flush();
   }
 
   void move(int axis, int dir) async {
@@ -79,7 +79,7 @@ class _RCScreenState extends State<RCScreen> {
   }
 
   Widget mmBox(int id, String txt) {
-    Border _b = Border.all(
+    Border? _b = Border.all(
       width: 2.0,
       color: Colors.white,
     );
@@ -132,6 +132,7 @@ class _RCScreenState extends State<RCScreen> {
     final double boxW = 80.0;
     final double boxH = 60.0;
     final double boxP = 10.0;
+    final intl = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -156,7 +157,7 @@ class _RCScreenState extends State<RCScreen> {
                     color: const Color(0xFF1E1E1E),
                   ),
                   child: Text(
-                    AppLocalizations.of(context).settemp,
+                    intl.settemp,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -395,7 +396,7 @@ class _RCScreenState extends State<RCScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        AppLocalizations.of(context).extrude,
+                        intl.extrude,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -424,7 +425,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        AppLocalizations.of(context).pullup,
+                        intl.pullup,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -450,7 +451,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        AppLocalizations.of(context).spitout,
+                        intl.spitout,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -486,7 +487,7 @@ class _RCScreenState extends State<RCScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        AppLocalizations.of(context).fan,
+                        intl.fan,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -515,7 +516,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        AppLocalizations.of(context).turnoff,
+                        intl.turnoff,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -541,7 +542,7 @@ class _RCScreenState extends State<RCScreen> {
                         color: const Color(0xFF1E1E1E),
                       ),
                       child: Text(
-                        AppLocalizations.of(context).turnon,
+                        intl.turnon,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 35.0,
@@ -570,7 +571,7 @@ class _RCScreenState extends State<RCScreen> {
                     color: const Color(0xFF1E1E1E),
                   ),
                   child: Text(
-                    AppLocalizations.of(context).turnoffmotors,
+                    intl.turnoffmotors,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -597,7 +598,7 @@ class _RCScreenState extends State<RCScreen> {
                     color: Colors.blue,
                   ),
                   child: Text(
-                    AppLocalizations.of(context).close,
+                    intl.close,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -623,7 +624,7 @@ class _RCScreenState extends State<RCScreen> {
     try {
       _s = await Socket.connect(globals.api_url, 55555);
       //_s = await Socket.connect('192.168.1.121', 55555);
-      _s.listen((data) {
+      _s?.listen((data) {
         _secureResponse = new String.fromCharCodes(data).trim();
         print('(1) $_secureResponse');
         //if (_secureResponse.startsWith("status:")) {
@@ -634,7 +635,7 @@ class _RCScreenState extends State<RCScreen> {
         print("(2) $_secureResponse");
       }), onDone: (() {
         print("(3):Done");
-        _s.destroy();
+        _s?.destroy();
       }), cancelOnError: false);
     } catch (e) {
       print("(4): Exeption $e");
@@ -645,9 +646,9 @@ class _RCScreenState extends State<RCScreen> {
   void closeConnectionToPI() async {
     print("Close connection to PI\n");
     try {
-      this._s.write("exit\n");
-      await _s.flush();
-      _s.destroy();
+      this._s?.write("exit\n");
+      await _s?.flush();
+      _s?.destroy();
     } catch (e) {
       print("(5): Exeption $e");
     }

@@ -19,11 +19,11 @@ class SDListScreen extends StatefulWidget {
 }
 
 class _SDListScreenState extends State<SDListScreen> {
-  String _response;
-  Socket _s;
-  List<String> _itemsAll;
-  List<String> _items;
-  bool _loading;
+  String _response = "";
+  Socket? _s;
+  List<String> _itemsAll = [];
+  List<String> _items = [];
+  bool _loading = true;
   TextEditingController editingController = TextEditingController();
 
   @override
@@ -33,13 +33,13 @@ class _SDListScreenState extends State<SDListScreen> {
     fetchData().then((v) {
       var itemsJ = jsonDecode(v)['list'] as List;
       setState(() {
-        _itemsAll = itemsJ != null ? List.from(itemsJ) : null;
+        _itemsAll = List.from(itemsJ);
         if (_itemsAll != null) {
           _itemsAll.sort((a, b) {
             return compareAsciiUpperCase(a, b);
           });
         }
-        _items = List<String>();
+        _items = [];
         _items.addAll(_itemsAll);
         _loading = false;
       });
@@ -48,10 +48,10 @@ class _SDListScreenState extends State<SDListScreen> {
 
   // Filter list.
   void filterSearchResults(String query) {
-    List<String> dummySearchList = List<String>();
+    List<String> dummySearchList = [];
     dummySearchList.addAll(_itemsAll);
     if (query.isNotEmpty) {
-      List<String> dummyListData = List<String>();
+      List<String> dummyListData = [];
       dummySearchList.forEach((item) {
         if (item.containsIgnoreCase(query)) {
           dummyListData.add(item);
@@ -71,6 +71,7 @@ class _SDListScreenState extends State<SDListScreen> {
   }
 
   Widget slideLeftBackground() {
+    final intl = AppLocalizations.of(context)!;
     return Container(
       color: Colors.red,
       child: Align(
@@ -82,7 +83,7 @@ class _SDListScreenState extends State<SDListScreen> {
               color: Colors.white,
             ),
             Text(
-              AppLocalizations.of(context).delete,
+              intl.delete,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -100,6 +101,7 @@ class _SDListScreenState extends State<SDListScreen> {
   }
 
   Widget slideRightBackground() {
+    final intl = AppLocalizations.of(context)!;
     return Container(
       color: Colors.blue,
       child: Align(
@@ -114,7 +116,7 @@ class _SDListScreenState extends State<SDListScreen> {
               color: Colors.white,
             ),
             Text(
-              AppLocalizations.of(context).select,
+              intl.select,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -131,6 +133,7 @@ class _SDListScreenState extends State<SDListScreen> {
   // Create sinle list item.
   Widget _getListItemTile(BuildContext context, int index) {
     final item = _items[index];
+    final intl = AppLocalizations.of(context)!;
     return Dismissible(
       // Show a red background as the item is swiped away.
       background: slideRightBackground(),
@@ -142,12 +145,11 @@ class _SDListScreenState extends State<SDListScreen> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: Text(
-                      AppLocalizations.of(context).confirmdelete + " $item?"),
+                  content: Text(intl.confirmdelete + " $item?"),
                   actions: <Widget>[
                     FlatButton(
                       child: Text(
-                        AppLocalizations.of(context).cancel,
+                        intl.cancel,
                         style: TextStyle(color: Colors.black),
                       ),
                       onPressed: () {
@@ -156,7 +158,7 @@ class _SDListScreenState extends State<SDListScreen> {
                     ),
                     FlatButton(
                       child: Text(
-                        AppLocalizations.of(context).delete,
+                        intl.delete,
                         style: TextStyle(color: Colors.red),
                       ),
                       onPressed: () {
@@ -232,6 +234,7 @@ class _SDListScreenState extends State<SDListScreen> {
     if (_loading) {
       return Center(child: CircularProgressIndicator());
     } else {
+      final intl = AppLocalizations.of(context)!;
       return Scaffold(
         backgroundColor: Colors.black,
         body: Padding(
@@ -252,7 +255,7 @@ class _SDListScreenState extends State<SDListScreen> {
                     filterSearchResults(value);
                   },
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).search,
+                    hintText: intl.search,
                     prefixIcon: Icon(Icons.search, color: Colors.white),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.all(10.0),
@@ -289,7 +292,7 @@ class _SDListScreenState extends State<SDListScreen> {
                       color: const Color(0xFFF32121),
                     ),
                     child: Text(
-                      AppLocalizations.of(context).close,
+                      intl.close,
                       style: TextStyle(
                         fontFamily: 'HK Grotesk',
                         fontSize: 20.0,
@@ -316,7 +319,7 @@ class _SDListScreenState extends State<SDListScreen> {
     _response = "";
     try {
       _s = await Socket.connect(globals.api_url, 55555);
-      _s.listen((data) {
+      _s?.listen((data) {
         _response += new String.fromCharCodes(data);
         print('(1)');
       }, onError: ((error, StackTrace trace) {
@@ -326,10 +329,10 @@ class _SDListScreenState extends State<SDListScreen> {
       }), onDone: (() {
         print("(3):Done");
         _cmp.complete(_response);
-        _s.destroy();
+        _s?.destroy();
       }), cancelOnError: false);
-      _s.write("list\n");
-      await _s.flush();
+      _s?.write("list\n");
+      await _s?.flush();
     } catch (e) {
       print("(4): Exeption $e");
       _cmp.complete(_response);

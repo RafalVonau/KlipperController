@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../statefulwrapper.dart';
 import 'settings_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../globals.dart' as globals;
@@ -36,12 +35,13 @@ class PrintScreen extends StatefulWidget {
 
 class _PrintScreenState extends State<PrintScreen> {
   final String _fileName;
-  Socket _s;
-  String _secureResponse;
-  int _bedTemp;
-  int _heaterTemp;
-  int _printProgress;
-  bool _pause;
+  Socket? _s;
+  String _secureResponse = "";
+  int _bedTemp = 0;
+  int _heaterTemp = 0;
+  int _printProgress = 0;
+  bool _pause = false;
+
   _PrintScreenState(this._fileName) : super();
 
   @override
@@ -63,28 +63,28 @@ class _PrintScreenState extends State<PrintScreen> {
   // Parse response from printer.
   // status:{ok B:57.0 /60.0 T0:200.0/220.0},{ok SD printing byte 6199/23818682}
   void gotResponse(String res) {
-    double bedTemp, heaterTemp, printProgress;
-    RegExp exp = new RegExp(r"\s(.{1,2}:\d+\.\d+)");
+    double? bedTemp, heaterTemp, printProgress;
+    RegExp exp = new RegExp(r"[\s{](.{1,2}:\d+\.\d+)");
     RegExp exp1 = new RegExp(r"\d+");
 
     //res = "status:{ok B:57.0 /60.0 T0:200.0/220.0},{ok SD printing byte 6199/23818}";
 
     List<String> k = res.split('},{');
     if (k.length != 2) return;
-    Iterable<String> matches = exp.allMatches(k[0]).map((m) => m[0]);
-    Iterable<String> matches1 = exp1.allMatches(k[1]).map((m) => m[0]);
+    Iterable<String?> matches = exp.allMatches(k[0]).map((m) => m[0]);
+    Iterable<String?> matches1 = exp1.allMatches(k[1]).map((m) => m[0]);
     print(matches);
     print(matches1);
     matches.forEach((s) {
-      List<String> l = s.split(':');
+      List<String?> l = s!.split(':');
       if (l.length == 2) {
-        String k = l[0].trim();
-        String v = l[1].trim();
-        if (k == "B") {
-          bedTemp = double.tryParse(v);
+        String? k = l[0]?.trim();
+        String? v = l[1]?.trim();
+        if ((k == "B") || (k == "{B")) {
+          bedTemp = double.tryParse(v!);
           print("Got bed temperature $bedTemp");
         } else if (k == "T0") {
-          heaterTemp = double.tryParse(v);
+          heaterTemp = double.tryParse(v!);
           print("Got heater temperature $heaterTemp");
         }
       }
@@ -92,14 +92,14 @@ class _PrintScreenState extends State<PrintScreen> {
     if (matches1.length == 2) {
       // Calculate print progress
       printProgress =
-          (100 * int.parse(matches1.first)) / int.parse(matches1.last);
+          (100 * int.parse(matches1.first!)) / int.parse(matches1.last!);
     } else {
       printProgress = 0.0;
     }
     setState(() {
-      _bedTemp = bedTemp.round();
-      _heaterTemp = heaterTemp.round();
-      _printProgress = printProgress.round();
+      _bedTemp = bedTemp!.round();
+      _heaterTemp = heaterTemp!.round();
+      _printProgress = printProgress!.round();
     });
   }
 
@@ -109,24 +109,24 @@ class _PrintScreenState extends State<PrintScreen> {
     try {
       _s = await Socket.connect(globals.api_url, 55555);
       //_s = await Socket.connect('192.168.1.121', 55555);
-      _s.listen((data) {
+      _s?.listen((data) {
         _secureResponse = new String.fromCharCodes(data).trim();
         print('(1) $_secureResponse');
         if (_secureResponse.startsWith("status:")) {
           gotResponse(_secureResponse);
         }
         Timer(Duration(seconds: 3), () {
-          this._s.write("status\n");
+          this._s?.write("status\n");
         });
       }, onError: ((error, StackTrace trace) {
         _secureResponse = error.toString();
         print("(2) $_secureResponse");
       }), onDone: (() {
         print("(3):Done");
-        _s.destroy();
+        _s?.destroy();
       }), cancelOnError: false);
-      this._s.write("status\n");
-      await _s.flush();
+      this._s?.write("status\n");
+      await _s?.flush();
     } catch (e) {
       print("(4): Exeption $e");
     }
@@ -136,9 +136,9 @@ class _PrintScreenState extends State<PrintScreen> {
   void closeConnectionToPI() async {
     print("Close connection to PI\n");
     try {
-      this._s.write("exit\n");
-      await _s.flush();
-      _s.destroy();
+      this._s?.write("exit\n");
+      await _s?.flush();
+      _s?.destroy();
     } catch (e) {
       print("(5): Exeption $e");
     }
@@ -146,6 +146,7 @@ class _PrintScreenState extends State<PrintScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final intl = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -180,7 +181,7 @@ class _PrintScreenState extends State<PrintScreen> {
                               Align(
                                 alignment: Alignment(-0.09, 0.0),
                                 child: Text(
-                                  AppLocalizations.of(context).head,
+                                  intl.head,
                                   style: TextStyle(
                                     fontFamily: 'HK Grotesk',
                                     fontSize: 30.0,
@@ -235,7 +236,7 @@ class _PrintScreenState extends State<PrintScreen> {
                                     Align(
                                       alignment: Alignment(-0.11, 0.0),
                                       child: Text(
-                                        AppLocalizations.of(context).bed,
+                                        intl.bed,
                                         style: TextStyle(
                                           fontFamily: 'HK Grotesk',
                                           fontSize: 30.0,
@@ -292,7 +293,7 @@ class _PrintScreenState extends State<PrintScreen> {
                           children: <Widget>[
                             Spacer(flex: 25),
                             Text(
-                              AppLocalizations.of(context).printprogress,
+                              intl.printprogress,
                               style: TextStyle(
                                 fontFamily: 'HK Grotesk',
                                 fontSize: 40.0,
@@ -364,7 +365,7 @@ class _PrintScreenState extends State<PrintScreen> {
                       color: Colors.blue,
                     ),
                     child: Text(
-                      AppLocalizations.of(context).settings,
+                      intl.settings,
                       style: TextStyle(
                         fontFamily: 'HK Grotesk',
                         fontSize: 35.0,
@@ -453,11 +454,11 @@ class _PrintScreenState extends State<PrintScreen> {
                         print('onTap Pauza');
                         if (_pause) {
                           _pause = false;
-                          this._s.write("gcode:M24\n");
+                          this._s?.write("gcode:M24\n");
                           //this._s.write("gcode:RESUME\n");
                         } else {
                           _pause = true;
-                          this._s.write("gcode:M25\n");
+                          this._s?.write("gcode:M25\n");
                           //this._s.write("gcode:PAUSE\n");
                         }
                       },
@@ -470,7 +471,7 @@ class _PrintScreenState extends State<PrintScreen> {
                           color: const Color(0xFFF39A21),
                         ),
                         child: Text(
-                          AppLocalizations.of(context).pause,
+                          intl.pause,
                           style: TextStyle(
                             fontFamily: 'HK Grotesk',
                             fontSize: 35.0,
@@ -497,7 +498,7 @@ class _PrintScreenState extends State<PrintScreen> {
                           color: const Color(0xFFF32121),
                         ),
                         child: Text(
-                          AppLocalizations.of(context).cancel,
+                          intl.cancel,
                           style: TextStyle(
                             fontFamily: 'HK Grotesk',
                             fontSize: 35.0,

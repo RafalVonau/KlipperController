@@ -31,11 +31,11 @@ int __enable_debug = 0;
 
 
 typedef struct {
-    int fd;                     /*!< Socket file handle.                                    */
-    int epfd;                   /*!< Epoll file handle.                                     */
-    int pos_wr;                 /*!< Write pointer.                                         */
-    int pos_rd;                 /*!< Read pointer.                                          */
-    char buf[BUFFER_SIZE+1];    /*!< Data buffer.                                           */
+	int fd;                     /*!< Socket file handle.                                    */
+	int epfd;                   /*!< Epoll file handle.                                     */
+	int pos_wr;                 /*!< Write pointer.                                         */
+	int pos_rd;                 /*!< Read pointer.                                          */
+	char buf[BUFFER_SIZE+1];    /*!< Data buffer.                                           */
 } sys_eth_relay_client_t;
 //=====================================================================================================================
 
@@ -274,64 +274,64 @@ int sys_eth_relay_parse_line(sys_eth_relay_client_t *c, char *line, int len);
 int sys_eth_relay_parse_line(sys_eth_relay_client_t *c, char *line, int len)
 {
 	String s;
-    char *ntab[16];
-    int i, n, file, e, cnt;
-    __u32 start, stop;
+	char *ntab[16];
+	int i, n, file, e, cnt;
+	__u32 start, stop;
 
 	string_init(&s);
 
-    relay_debug("Got single line <%s>",line);
+	relay_debug("Got single line <%s>",line);
 	ntab[0]=line;n=1;
 
 	/* Podziel części oddzielone znakiem ':' */
 	for (i=0;i<len; ++i) {if (line[i] == ':') {line[i] = '\0';if (n<15) {ntab[n++] = &line[i+1];}}}
-    relay_debug("Parts = %d",n);
+	relay_debug("Parts = %d",n);
 
 	if (n == 1) {
 		if (!strcmp(ntab[0],"list")) {
-            relay_debug("Generating file list.");
+			relay_debug("Generating file list.");
 			construct_gcode_list(&s, __uploads_dir);
 			sys_eth_relay_send(c, s.buf, s.poz);
 			shutdown ( c->fd, 1 ); /* Flush data            */
 			goto close_con_and_exit;
 		} else if (!strcmp(ntab[0],"exit")) {
-            relay_debug("Ending connection.");
+			relay_debug("Ending connection.");
 			sys_eth_relay_send(c, "exit\n", 5);
 			shutdown ( c->fd, 1 ); /* Flush data            */
 			goto close_con_and_exit;
 		} else if (!strcmp(ntab[0],"gettemp")) {
 			string_clear(&s);
-            relay_debug("Get information about temperatures.");
+			relay_debug("Get information about temperatures.");
 			cstring_add(&s,"gettemp:");
 			execute_printer_commands(&s, "M105", NULL, NULL);
 			sys_eth_relay_send(c, s.buf, s.poz);
 		} else if (!strcmp(ntab[0],"printstatus")) {
 			string_clear(&s);
-            relay_debug("Get SD print status (M27).");
+			relay_debug("Get SD print status (M27).");
 			cstring_add(&s,"printstatus:");
 			execute_printer_commands(&s, "M27", NULL, NULL);
 			sys_eth_relay_send(c, s.buf, s.poz);
 		} else if (!strcmp(ntab[0],"status")) {
 			string_clear(&s);
-            relay_debug("Get info about temperatures and SD prin status (M105 M27).");
+			relay_debug("Get info about temperatures and SD print status (M105 M27).");
 			cstring_add(&s,"status:");
 			execute_printer_commands(&s, "M105", NULL, "M27");
 			//cstring_add(&s,"status:{ok T:100.0/225.0 B:98.0 /110.0 T0:228.0/220.0 T1:150.0/185},{ok}\n");
 			sys_eth_relay_send(c, s.buf, s.poz);
 		} else if (!strcmp(ntab[0],"getlog")) {
 			string_clear(&s);
-            relay_debug("Get Klipper log file");
+			relay_debug("Get Klipper log file");
 			string_add_from_file2(&s, __klipper_log);
 			sys_eth_relay_send(c, s.buf, s.poz);
 			goto close_con_and_exit;
 		} else if (!strcmp(ntab[0],"getcfg")) {
 			string_clear(&s);
-            relay_debug("Get Klipper config file.");
+			relay_debug("Get Klipper config file.");
 			string_add_from_file2(&s, __klipper_cfg);
 			sys_eth_relay_send(c, s.buf, s.poz);
 			goto close_con_and_exit;
 		} else if (!strcmp(ntab[0],"putcfg")) {
-            relay_debug("Put Klipper config file.");
+			relay_debug("Put Klipper config file.");
 			string_clear(&s);
 			/* Pobieranie danych  - najpierw zapisz dane z bufora jeśli są */
 			len++;c->pos_rd += len;line += len;
@@ -345,57 +345,56 @@ int sys_eth_relay_parse_line(sys_eth_relay_client_t *c, char *line, int len)
 				i = recv(c->fd, c->buf,BUFFER_SIZE, 0);
 			}
 			/* Zapisz plik na dysku */
-            relay_debug("Save data to file <%s>, file size = %d", __klipper_cfg, string_length(&s));
+			relay_debug("Save data to file <%s>, file size = %d", __klipper_cfg, string_length(&s));
 			string_save_to_file2(&s, __klipper_cfg);
 			goto close_con_and_exit;
 		}
 	} else if (n == 2) {
 		if (!strcmp(ntab[0],"download")) {
-            relay_debug("Downloading file <%s>", ntab[1]);
-            start = timer_get_time();
+			relay_debug("Downloading file <%s>", ntab[1]);
+			start = timer_get_time();
 			string_clear(&s);
-            string_sprintf(&s, 4095, "%s/%s",__uploads_dir, ntab[1]);
+			string_sprintf(&s, 4095, "%s/%s",__uploads_dir, ntab[1]);
 			/* Pobieranie danych  - najpierw zapisz dane z bufora jeśli są */
-            file=open(string_c_str(&s),O_CREAT | O_WRONLY | O_TRUNC,  S_IROTH | S_IRGRP | S_IRUSR | S_IWUSR );
-            if (file < 0) {
-                msg_error("File open error !\n");
-                file = 1;
-            }
-            len++;c->pos_rd += len;line += len;e=0;
+			file=open(string_c_str(&s),O_CREAT | O_WRONLY | O_TRUNC,  S_IROTH | S_IRGRP | S_IRUSR | S_IWUSR );
+			if (file < 0) {
+				msg_error("File open error !\n");
+				file = 1;
+			}
+			len++;c->pos_rd += len;line += len;e=0;
 			if (c->pos_rd < c->pos_wr) {
-                cnt = c->pos_wr - c->pos_rd;
-                e = write(file, line, cnt);
-                if (e != cnt) {msg_error("Write to file error!\n");}
-
+				cnt = c->pos_wr - c->pos_rd;
+				e = write(file, line, cnt);
+				if (e != cnt) {msg_error("Write to file error!\n");}
 			}
 			/* Pobierz resztę pliku */
 			i = recv(c->fd, c->buf,BUFFER_SIZE, 0);
 			while (i > 0) {
-                cnt = write(file, c->buf, i);
-                if (i != cnt) {msg_error("Write to file error!\n");}
-                e += cnt;
-                i = recv(c->fd, c->buf, BUFFER_SIZE, 0);
+				cnt = write(file, c->buf, i);
+				if (i != cnt) {msg_error("Write to file error!\n");}
+				e += cnt;
+				i = recv(c->fd, c->buf, BUFFER_SIZE, 0);
 			}
 			/* Zapisz plik na dysku */
-            stop = timer_get_time();
-            relay_debug("Write data to file <%s>, file size = %d, elapsed = %d [ms]", string_c_str(&s), e, timer_get_elapsed(stop,start));
-            close(file);
+			stop = timer_get_time();
+			relay_debug("Write data to file <%s>, file size = %d, elapsed = %d [ms]", string_c_str(&s), e, timer_get_elapsed(stop,start));
+			close(file);
 			goto close_con_and_exit;
 		} else if (!strcmp(ntab[0],"print")) {
 			string_clear(&s);
-            relay_debug("Printing file <%s>", ntab[1]);
+			relay_debug("Printing file <%s>", ntab[1]);
 			cstring_add(&s,"print:");
 			execute_printer_commands(&s, "M23", ntab[1], "M24");
 			sys_eth_relay_send(c, s.buf, s.poz);
 		} else if (!strcmp(ntab[0],"gcode")) {
 			string_clear(&s);
-            relay_debug("Execute gcode <%s>",ntab[1]);
+			relay_debug("Execute gcode <%s>",ntab[1]);
 			cstring_add(&s,"gcode:");
 			execute_printer_commands(&s, ntab[1], NULL, NULL);
 			sys_eth_relay_send(c, s.buf, s.poz);
 		} else if (!strcmp(ntab[0],"unlink")) {
 			string_clear(&s);
-            relay_debug("Delete file <%s>", ntab[1]);
+			relay_debug("Delete file <%s>", ntab[1]);
 			cstring_add(&s,"unlink: ok\n");
 			unlink_file(ntab[1]);
 			sys_eth_relay_send(c, s.buf, s.poz);
@@ -403,7 +402,7 @@ int sys_eth_relay_parse_line(sys_eth_relay_client_t *c, char *line, int len)
 	} else if (n == 3) {
 		if (!strcmp(ntab[0],"gcode")) {
 			string_clear(&s);
-            relay_debug("Execute gcode <%s> <%s>",ntab[1], ntab[2]);
+			relay_debug("Execute gcode <%s> <%s>",ntab[1], ntab[2]);
 			cstring_add(&s,"gcode:");
 			execute_printer_commands(&s, ntab[1], ntab[2], NULL);
 			sys_eth_relay_send(c, s.buf, s.poz);
@@ -437,14 +436,14 @@ void sys_eth_relay_parse_data(sys_eth_relay_client_t *c)
 	/* Kompaktuj wskaźniki jeśli trzeba */
 	if (c->pos_rd >= c->pos_wr) {
 		/* Całe dane zostały przetworzone - zeruj wskaźniki */
-        relay_debug("All data consumed - clear pointers");
+		relay_debug("All data consumed - clear pointers");
 		c->pos_rd = 0;
 		c->pos_wr = 0;
 	} else {
 		if ((c->pos_wr > BUFFER_HALF) && (c->pos_rd)) {
 			/* Ponad połowa bufora zajęta - przenieś pozostałe dane na początek bufora */
 			len = (c->pos_wr - c->pos_rd);
-            relay_debug("Move data to the front (from %d size %d)",c->pos_rd, len);
+			relay_debug("Move data to the front (from %d size %d)",c->pos_rd, len);
 			for (i=0;i<len;++i) {c->buf[i] = c->buf[c->pos_rd+i];}
 			c->pos_rd = 0;
 			c->pos_wr = len;
@@ -469,13 +468,14 @@ int main(int argc, char *argv[])
 	__uploads_dir = "/home/pi/uploads";
 	__klipper_cfg = "/home/pi/printer.cfg";
 	__klipper_log = "/tmp/klippy.log";
-    while ((i = getopt(argc, argv, "u:c:l:vh")) != -1)
+
+	while ((i = getopt(argc, argv, "u:c:l:vh")) != -1)
 		switch (i) {
 		case 'u': __uploads_dir = strdup(optarg);break;
 		case 'c': __klipper_cfg = strdup(optarg);break;
 		case 'l': __klipper_log = strdup(optarg);break;
-        case 'v': __enable_debug=1; break;
-        case 'h': printf("print-server [-u upload_dir] [-c klipper_config_file] [-l klipper_log_file] [-v]\n\t-v - verbose mode.\n\n");return 0;break;
+		case 'v': __enable_debug=1; break;
+		case 'h': printf("print-server [-u upload_dir] [-c klipper_config_file] [-l klipper_log_file] [-v]\n\t-v - verbose mode.\n\n");return 0;break;
 		default:break;
 		}
 
@@ -489,7 +489,7 @@ int main(int argc, char *argv[])
 	epfd = epoll_create(cnt);
 	events = calloc((cnt+1), sizeof(struct epoll_event));
 	if (!events) {
-        msg_error("Can not allocate memory for epoll!");
+		msg_error("Can not allocate memory for epoll!");
 		close(epfd);
 		cl_free(nc);
 		return -1;
@@ -502,7 +502,7 @@ int main(int argc, char *argv[])
 	Edgvent.events   = EPOLLIN | EPOLLERR | EPOLLHUP; // | EPOLLET;
 	Edgvent.data.ptr = nc;
 	if (epoll_ctl((int)epfd, EPOLL_CTL_ADD, serverfd, &Edgvent) != 0) {
-        msg_error("Can not add server socket to epoll!!\n");
+		msg_error("Can not add server socket to epoll!!\n");
 		free(events);
 		close(epfd);
 		cl_free(nc);
@@ -528,14 +528,14 @@ int main(int argc, char *argv[])
 			// Case 2: Server is receiving a connection request
 			if (c->fd == serverfd) {
 				fd_new = accept(serverfd, (struct sockaddr*)&remote_addr, &addr_size);
-                relay_debug("New connection (address: %s, sock_fd: %d)", inet_ntoa(remote_addr.sin_addr), fd_new);
+				relay_debug("New connection (address: %s, sock_fd: %d)", inet_ntoa(remote_addr.sin_addr), fd_new);
 				if (fd_new < 0)  {
-                    if (errno != EAGAIN && errno != EWOULDBLOCK) {msg_error("Error during accept!!");}
+					if (errno != EAGAIN && errno != EWOULDBLOCK) {msg_error("Error during accept!!");}
 					continue;
 				}
 				nc = (sys_eth_relay_client_t *)cl_malloc(sizeof(sys_eth_relay_client_t));
 				if (!nc) {
-                    msg_error("Memeory allocation error (client structure)!");
+					msg_error("Memeory allocation error (client structure)!");
 					close(fd_new);
 				} else {
 					nc->fd     = fd_new;
@@ -546,7 +546,7 @@ int main(int argc, char *argv[])
 					Edgvent.data.ptr = nc;
 					sys_net_set_keepalive(fd_new, 2);
 					if (epoll_ctl(epfd, EPOLL_CTL_ADD, fd_new, &Edgvent) == -1) {
-                        msg_error("Can not add client socket to epoll (fd: %d)",fd_new);
+						msg_error("Can not add client socket to epoll (fd: %d)",fd_new);
 						close(fd_new);
 						if (nc) cl_free(nc);
 					}

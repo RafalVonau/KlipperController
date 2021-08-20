@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'rc_screen.dart';
+import 'cmd_screen.dart';
 import 'edit_screen.dart';
 import 'log_screen.dart';
 import 'credits_screen.dart';
@@ -26,7 +27,7 @@ class SettingsBox extends StatelessWidget {
 }
 
 class SettingScreen extends StatelessWidget {
-  SettingScreen({Key key}) : super(key: key);
+  SettingScreen({Key? key}) : super(key: key);
   final TextEditingController _api_url_ctl = TextEditingController();
   final TextEditingController _head_temp_ctl = TextEditingController();
   final TextEditingController _bed_temp_ctl = TextEditingController();
@@ -36,6 +37,7 @@ class SettingScreen extends StatelessWidget {
     _api_url_ctl.text = globals.api_url;
     _head_temp_ctl.text = globals.head_temp.toString();
     _bed_temp_ctl.text = globals.bed_temp.toString();
+    final intl = AppLocalizations.of(context)!;
     Widget res = Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -58,42 +60,18 @@ class SettingScreen extends StatelessWidget {
                         onTap: () async {
                           print(_api_url_ctl.text);
                           globals.api_url = _api_url_ctl.text;
-                          await globals.prefs
-                              .setString('api_url', globals.api_url);
+                          final pr = globals.prefs!;
+                          await pr.setString('api_url', globals.api_url);
                           globals.head_temp = int.parse(_head_temp_ctl.text);
-                          await globals.prefs
-                              .setInt('head_temp', globals.head_temp);
+                          await pr.setInt('head_temp', globals.head_temp);
                           globals.bed_temp = int.parse(_bed_temp_ctl.text);
-                          await globals.prefs
-                              .setInt('bed_temp', globals.bed_temp);
+                          await pr.setInt('bed_temp', globals.bed_temp);
                           Navigator.pop(context);
                         },
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text(
-                            AppLocalizations.of(context).save,
-                            style: TextStyle(
-                              fontFamily: 'HK Grotesk',
-                              fontSize: 30.0,
-                              color: Colors.blue,
-                              fontWeight: FontWeight.w500,
-                              height: 1.13,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Spacer(flex: 190),
-                      InkWell(
-                        onTap: () async {
-                          Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new CreditsBox()));
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            AppLocalizations.of(context).credits,
+                            intl.save,
                             style: TextStyle(
                               fontFamily: 'HK Grotesk',
                               fontSize: 30.0,
@@ -106,7 +84,7 @@ class SettingScreen extends StatelessWidget {
                       ),
                       Spacer(flex: 190),
                       Text(
-                        AppLocalizations.of(context).settings,
+                        intl.settings,
                         style: TextStyle(
                           fontFamily: 'HK Grotesk',
                           fontSize: 45.0,
@@ -126,7 +104,7 @@ class SettingScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.89, 0.0),
                 child: Text(
-                  AppLocalizations.of(context).printer_ip,
+                  intl.printer_ip,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 30.0,
@@ -167,7 +145,7 @@ class SettingScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.83, 0.0),
                 child: Text(
-                  AppLocalizations.of(context).temp_head,
+                  intl.temp_head,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 30.0,
@@ -209,7 +187,7 @@ class SettingScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.85, 0.0),
                 child: Text(
-                  AppLocalizations.of(context).temp_bed,
+                  intl.temp_bed,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 30.0,
@@ -283,7 +261,7 @@ class SettingScreen extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    AppLocalizations.of(context).cfg_klipper,
+                                    intl.cfg_klipper,
                                     style: TextStyle(
                                       fontFamily: 'HK Grotesk',
                                       fontSize: 28.0,
@@ -296,7 +274,7 @@ class SettingScreen extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.bottomLeft,
                                   child: Text(
-                                    AppLocalizations.of(context).cfg_edit,
+                                    intl.cfg_edit,
                                     style: TextStyle(
                                       fontFamily: 'HK Grotesk',
                                       fontSize: 28.0,
@@ -319,6 +297,13 @@ class SettingScreen extends StatelessWidget {
               SizedBox(width: 600, height: 60),
               //Remote
               InkWell(
+                onLongPress: () {
+                  /* Show Command box */
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new CmdScreen()));
+                },
                 onTap: () {
                   Navigator.push(context,
                       new MaterialPageRoute(builder: (context) => new RCBox()));
@@ -530,7 +515,7 @@ class SettingScreen extends StatelessWidget {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  AppLocalizations.of(context).remote_control,
+                                  intl.remote_control,
                                   style: TextStyle(
                                     fontFamily: 'HK Grotesk',
                                     fontSize: 28.0,
@@ -542,7 +527,7 @@ class SettingScreen extends StatelessWidget {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  AppLocalizations.of(context).remote_desc,
+                                  intl.remote_desc,
                                   style: TextStyle(
                                     fontFamily: 'HK Grotesk',
                                     fontSize: 28.0,
@@ -562,6 +547,7 @@ class SettingScreen extends StatelessWidget {
                 ),
               ),
               Spacer(flex: 10),
+              Row(children: [
                 InkWell(
                   onTap: () {
                     Navigator.push(
@@ -572,7 +558,7 @@ class SettingScreen extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(30.0),
                     child: Text(
-                      AppLocalizations.of(context).printerlog,
+                      intl.printerlog,
                       style: TextStyle(
                         fontFamily: 'HK Grotesk',
                         fontSize: 30.0,
@@ -584,7 +570,29 @@ class SettingScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
+                Spacer(flex: 190),
+                InkWell(
+                  onTap: () async {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new CreditsBox()));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      intl.credits,
+                      style: TextStyle(
+                        fontFamily: 'HK Grotesk',
+                        fontSize: 30.0,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500,
+                        height: 1.13,
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
               Spacer(flex: 100),
             ],
           ),

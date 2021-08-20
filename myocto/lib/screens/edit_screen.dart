@@ -7,8 +7,8 @@ import '../globals.dart' as globals;
 
 class EditScreen extends StatelessWidget {
   final TextEditingController __textEditingCtl = TextEditingController();
-  String _response;
-  Socket _s;
+  String _response = "";
+  Socket? _s;
 
   void _showAlert(BuildContext context, String stext) {
     showDialog(
@@ -20,12 +20,17 @@ class EditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final intl = AppLocalizations.of(context)!;
+    var screenSize = MediaQuery.of(context).size;
+    var kbd = MediaQuery.of(context).viewInsets.bottom;
+    var width = screenSize.width;
+    var height = screenSize.height;
     return FutureBuilder(
       future: fetchData(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           debugPrint('Step 3, build widget: ${snapshot.data}');
-          __textEditingCtl.text = snapshot.data;
+          __textEditingCtl.text = snapshot.data.toString();
           return Scaffold(
               backgroundColor: Colors.black,
               body: Column(
@@ -35,8 +40,8 @@ class EditScreen extends StatelessWidget {
                     SizedBox(width: 600, height: 30),
                     Container(
                       alignment: Alignment(-0.76, 0.0),
-                      width: 320.0,
-                      height: 250.0,
+                      width: (width - 40.0),
+                      height: (height - kbd - 120.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: const Color(0xFF1E1E1E),
@@ -95,7 +100,7 @@ class EditScreen extends StatelessWidget {
                                 color: Colors.blue,
                               ),
                               child: Text(
-                                AppLocalizations.of(context).save,
+                                intl.save,
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 20.0,
@@ -124,7 +129,7 @@ class EditScreen extends StatelessWidget {
                                 color: const Color(0xFFF32121),
                               ),
                               child: Text(
-                                AppLocalizations.of(context).cancel,
+                                intl.cancel,
                                 style: TextStyle(
                                   fontFamily: 'HK Grotesk',
                                   fontSize: 20.0,
@@ -155,7 +160,7 @@ class EditScreen extends StatelessWidget {
     _response = "";
     try {
       _s = await Socket.connect(globals.api_url, 55555);
-      _s.listen((data) {
+      _s?.listen((data) {
         _response += new String.fromCharCodes(data);
         print('(1)');
       }, onError: ((error, StackTrace trace) {
@@ -165,10 +170,10 @@ class EditScreen extends StatelessWidget {
       }), onDone: (() {
         print("(3):Done");
         _cmp.complete(_response);
-        _s.destroy();
+        _s?.destroy();
       }), cancelOnError: false);
-      _s.write("getcfg\n");
-      await _s.flush();
+      _s?.write("getcfg\n");
+      await _s?.flush();
     } catch (e) {
       print("(4): Exeption $e");
       _cmp.complete(_response);

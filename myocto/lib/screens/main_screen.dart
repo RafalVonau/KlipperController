@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:core';
+import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,12 +13,11 @@ import 'print_screen.dart';
 import 'pick_screen.dart';
 import '../globals.dart' as globals;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//import 'package:path_provider/path_provider.dart';
+//import 'package:simple_permissions/simple_permissions.dart';
 
-extension FileExtention on FileSystemEntity {
-  String get name {
-    return this?.path?.split("/")?.last;
-  }
-}
+const hostname = '0.0.0.0'; // Binds to all adapters
+const port = 8000;
 
 class MainScreen extends StatefulWidget {
   @override
@@ -22,12 +25,15 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  bool _uploading;
+  bool _uploading = false;
+  bool _allowWriteFile = false;
 
   @override
   void initState() {
     super.initState();
     _uploading = false;
+    //_requestWritePermission();
+    //startServer();
   }
 
   // Schow dialog on error
@@ -39,33 +45,86 @@ class _MainScreenState extends State<MainScreen> {
             ));
   }
 
+//    _requestWritePermission() async {
+//      PermissionStatus permissionStatus = await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
+//      if (permissionStatus == PermissionStatus.authorized) {
+//        setState(() {
+//          _allowWriteFile = true;
+//        });
+//      }
+//    }
+//    Future get _localPath async {
+  // Application documents directory: /data/user/0/{package_name}/{app_name}
+//      final applicationDirectory = await getApplicationDocumentsDirectory();
+  // External storage directory: /storage/emulated/0
+//      final externalDirectory = await getExternalStorageDirectory();
+  // Application temporary directory: /data/user/0/{package_name}/cache
+//      final tempDirectory = await getTemporaryDirectory();
+//      return externalDirectory.path;
+//    }
+
+//    Future get _localFile async {
+//      final path = await _localPath;
+//      return File('$path/counterxxx.txt');
+//    }
+
+//    Future _writeToFile(String text) async {
+//      if (!_allowWriteFile) {
+//        return null;
+//      }
+//      final file = await _localFile;
+//      // Write the file
+//      File result = await file.writeAsString('$text');
+//      if (result == null ) {
+//        print("Writing to file failed");
+//      } else {
+//        print("Successfully writing to file");
+//      }
+//    }
+
+  Future<void> startServer() async {
+    final server = await ServerSocket.bind(hostname, port);
+    print('TCP server started at ${server.address}:${server.port}.');
+
+    try {
+      server.listen((Socket socket) {
+        print(
+            'New TCP client ${socket.address.address}:${socket.port} connected.');
+        socket.writeln("READY");
+        socket.listen((Uint8List data) {
+          if (data.length > 0 && data.first == 10) return;
+          final msg = data.toString();
+          print('Data from client: $msg');
+        }, onError: (error) {
+          print('Error for client ${socket.address.address}:${socket.port}.');
+        }, onDone: () {
+          print(
+              'Connection to client ${socket.address.address}:${socket.port} done.');
+        });
+      });
+    } on SocketException catch (ex) {
+      print(ex.message);
+    }
+  }
+
   // upload file to PI filesystem.
   void uploadFile() async {
     final String api_url = globals.api_url;
-    String name;
+    String name = "";
     bool ok = false;
 
     setState(() => _uploading = true);
-
-    if (Platform.isAndroid) {
-      final FilePickerResult result =
-          await FilePicker.platform.pickFiles(sendToIP: api_url);
-      if (result != null) {
-        var rfile = result.files.first;
-        name = rfile.name.split("/")?.last;
-        ok = true;
-      }
-    } else {
-      final FilePickerResult result =
+    {
+      final FilePickerResult? result =
           await FilePicker.platform.pickFiles(withData: true);
       if (result != null) {
         var rfile = result.files.first;
-        name = rfile.name.split("/")?.last;
+        name = rfile.name.split("/").last;
         try {
           Socket s = await Socket.connect(api_url, 55555);
           s.write("download:$name\n");
           //await s.addStream(file.openRead());
-          s.add(rfile.bytes); // one second faster
+          s.add(rfile.bytes!); // one second faster
           await s.flush();
           await s.close();
           s.destroy();
@@ -92,6 +151,7 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: Colors.black,
           body: Center(child: CircularProgressIndicator()));
     } else {
+      final intl = AppLocalizations.of(context)!;
       return Scaffold(
         backgroundColor: Colors.black,
         body: Align(
@@ -131,7 +191,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 Spacer(flex: 57),
                 Text(
-                  AppLocalizations.of(context).welcome,
+                  intl.welcome,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 56.0,
@@ -145,7 +205,7 @@ class _MainScreenState extends State<MainScreen> {
                 Align(
                   alignment: Alignment(-0.04, 0.0),
                   child: Text(
-                    AppLocalizations.of(context).addfilestoqueue,
+                    intl.addfilestoqueue,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 40.0,
@@ -164,9 +224,10 @@ class _MainScreenState extends State<MainScreen> {
                   },
                   onTap: () {
                     /* Go to select file source page */
-                     Navigator.push(
+                    Navigator.push(
                         context,
-                        new MaterialPageRoute(builder: (context) => new PickBox()));                    
+                        new MaterialPageRoute(
+                            builder: (context) => new PickBox()));
                   },
                   child:
 // Group: Group 9
@@ -203,7 +264,7 @@ class _MainScreenState extends State<MainScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    AppLocalizations.of(context).addfiles,
+                                    intl.addfiles,
                                     style: TextStyle(
                                       fontFamily: 'HK Grotesk',
                                       fontSize: 34.0,
@@ -216,7 +277,7 @@ class _MainScreenState extends State<MainScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    AppLocalizations.of(context).choicefile,
+                                    intl.choicefile,
                                     style: TextStyle(
                                       fontFamily: 'HK Grotesk',
                                       fontSize: 28.0,
@@ -246,7 +307,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: Padding(
                     padding: EdgeInsets.all(30.0),
                     child: Text(
-                      AppLocalizations.of(context).printersettings,
+                      intl.printersettings,
                       style: TextStyle(
                         fontFamily: 'HK Grotesk',
                         fontSize: 30.0,

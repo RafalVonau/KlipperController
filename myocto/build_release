@@ -1,0 +1,21 @@
+#!/bin/bash
+
+do_check()
+{
+	RES=$1
+	if [ ${RES} -ne 0 ]; then
+		exit ${RES}
+	fi
+}
+
+CWD=$(pwd)
+cd ~/flutter
+. ./env
+cd ${CWD}
+
+#flutter pub get
+#flutter build apk --split-per-abi --no-shrink
+flutter build apk --split-per-abi
+do_check $?
+#adb install build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+

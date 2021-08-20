@@ -39,6 +39,7 @@ class FileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final intl = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.black,
       body: Align(
@@ -67,7 +68,7 @@ class FileScreen extends StatelessWidget {
               ),
               Spacer(flex: 50),
               Text(
-                AppLocalizations.of(context).welcome,
+                intl.welcome,
                 style: TextStyle(
                   fontFamily: 'HK Grotesk',
                   fontSize: 56.0,
@@ -81,7 +82,7 @@ class FileScreen extends StatelessWidget {
               Align(
                 alignment: Alignment(-0.02, 0.0),
                 child: Text(
-                  AppLocalizations.of(context).selectedfile,
+                  intl.selectedfile,
                   style: TextStyle(
                     fontFamily: 'HK Grotesk',
                     fontSize: 40.0,
@@ -167,7 +168,8 @@ class FileScreen extends StatelessWidget {
                     final String api_url = globals.api_url;
                     print(api_url);
                     Socket s = await Socket.connect(api_url, 55555);
-                    await s.write('print:' + _fileName + "\n");
+                    s.write('print:' + _fileName + "\n");
+                    await s.flush();
                     await s.close();
                     Navigator.push(
                         context,
@@ -189,7 +191,7 @@ class FileScreen extends StatelessWidget {
                     color: Colors.blue,
                   ),
                   child: Text(
-                    AppLocalizations.of(context).print,
+                    intl.print,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 35.0,
@@ -213,7 +215,7 @@ class FileScreen extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(30.0),
                   child: Text(
-                    AppLocalizations.of(context).printersettings,
+                    intl.printersettings,
                     style: TextStyle(
                       fontFamily: 'HK Grotesk',
                       fontSize: 30.0,
