@@ -16,7 +16,7 @@ Features:
 - Control temperature and motor movement with a cell phone
 - Monitor print progress and head/bed temperatures
 
-![](https://github.com/BubuHub/KlipperController/blob/master/blob/assets/main_screen.jpg)
+![](https://github.com/RafalVonau/KlipperController/blob/master/blob/assets/main_screen.jpg)
 
 # Building server on PI
 * install git and gcc compiler on pi (sudo apt install git gcc)
